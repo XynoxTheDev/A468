@@ -7,7 +7,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 mtcnn = MTCNN(keep_all=True, device=device)
 resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 
-image_path = 'tests/1.jpg'
+image_path = 'tests/2.jpg'
 image = cv2.imread(image_path)
 
 boxes, _ = mtcnn.detect(image)
@@ -27,7 +27,7 @@ if boxes is not None:
         expanded_box = [x1, y1, x2, y2]
         
         face = image[expanded_box[1]:expanded_box[3], expanded_box[0]:expanded_box[2]]
-        blurred_face = cv2.GaussianBlur(face, (99, 99), 30)  # Adjust sigma value as needed
+        blurred_face = cv2.GaussianBlur(face, (99, 99), 15)  # Adjust sigma value as needed
         s_height, s_width, _ = face.shape
         mask = np.full((s_height, s_width), 0, dtype=np.uint8)
         cv2.ellipse(mask, (s_width // 2, s_height // 2), (s_width // 2, s_height // 2), 0, 0., 360, (255, 25, 255), -1)
