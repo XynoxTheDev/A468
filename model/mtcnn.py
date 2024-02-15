@@ -29,6 +29,8 @@ if boxes is not None:
         face = image[expanded_box[1]:expanded_box[3], expanded_box[0]:expanded_box[2]]
         blurred_face = cv2.GaussianBlur(face, (99, 99), 30)  # Adjust sigma value as needed
         image[expanded_box[1]:expanded_box[3], expanded_box[0]:expanded_box[2]] = blurred_face
+        print(x_center, y_center)
+        image = cv2.ellipse(image, (int(x_center), int(y_center)), (int(width/1.5), int(height/1.5)), 0, 0., 360, (0,0,255))
 else:
     print("No faces detected in the image.")
 
