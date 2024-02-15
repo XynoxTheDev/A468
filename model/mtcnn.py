@@ -1,21 +1,30 @@
+import cv2
 from facenet_pytorch import MTCNN, InceptionResnetV1
+import torch
 
-# If required, create a face detection pipeline using MTCNN:
-mtcnn = MTCNN(image_size=500, margin=0.5)
+# Load pre-trained models
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+mtcnn = MTCNN(keep_all=True, device=device)
+resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 
-# Create an inception resnet (in eval mode):
-resnet = InceptionResnetV1(pretrained='vggface2').eval()
+# Load image
+image_path = 'tests/1.jpg'
+image = cv2.imread(image_path)
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-from PIL import Image
+# Detect faces
+boxes, _ = mtcnn.detect(image)
 
-img = Image.open(<image path>)
-
-# Get cropped and prewhitened image tensor
-img_cropped = mtcnn(img, save_path=<optional save path>)
-
-# Calculate embedding (unsqueeze to add batch dimension)
-img_embedding = resnet(img_cropped.unsqueeze(0))
-
-# Or, if using for VGGFace2 classification
-resnet.classify = True
-img_probs = resnet(img_cropped.unsqueeze(0))
+# Identify faces
+if boxes is not None:
+    for box in boxes:
+        box = box.astype(int)
+        face = image[box[1]:box[3], box[0]:box[2]]
+        face = cv2.resize(face, (160, 160))
+        face_tensor = torch.tensor(face).permute(2, 0, 1).unsqueeze(0).float().to(device)
+        
+        embedding = resnet(face_tensor).detach().cpu().numpy().flatten()
+        
+        print("Face Embedding:", embedding)
+else:
+    print("No faces detected in the image.")
