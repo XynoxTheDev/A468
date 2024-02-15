@@ -14,17 +14,21 @@ boxes, _ = mtcnn.detect(image)
 
 if boxes is not None:
     for box in boxes:
-        box = box.astype(int)
-        cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (0, 255, 0), 2)
-        face = image[box[1]:box[3], box[0]:box[2]]
-        blurred_face = cv2.GaussianBlur(face, (99, 99), 5)
-        image[box[1]:box[3], box[0]:box[2]] = blurred_face
-        face = cv2.resize(face, (160, 160))
-        face_tensor = torch.tensor(face).permute(2, 0, 1).unsqueeze(0).float().to(device)
+        x_center = (box[0] + box[2]) // 2
+        y_center = (box[1] + box[3]) // 2
+        width = int((box[2] - box[0]) * 1.5)
+        height = int((box[3] - box[1]) * 1.4)
         
-        # embedding = resnet(face_tensor).detach().cpu().numpy().flatten()
+        x1 = max(0, int(x_center - width // 2))
+        y1 = max(0, int(y_center - height // 2))
+        x2 = min(image.shape[1], int(x_center + width // 2))
+        y2 = min(image.shape[0], int(y_center + height // 2))
         
-        # print("Face Embedding:", embedding)
+        expanded_box = [x1, y1, x2, y2]
+        
+        face = image[expanded_box[1]:expanded_box[3], expanded_box[0]:expanded_box[2]]
+        blurred_face = cv2.GaussianBlur(face, (99, 99), 30)  # Adjust sigma value as needed
+        image[expanded_box[1]:expanded_box[3], expanded_box[0]:expanded_box[2]] = blurred_face
 else:
     print("No faces detected in the image.")
 
