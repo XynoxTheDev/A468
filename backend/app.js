@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5500;
 
 // SQLite database setup
 const db = new sqlite3.Database(":memory:"); // In-memory database for demonstration
