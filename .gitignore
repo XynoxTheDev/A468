@@ -3,3 +3,4 @@
 backend/node_modules
 backend/node_modules/.package-lock.json
 
+users.db
