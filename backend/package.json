@@ -1,0 +1,22 @@
+{
+  "name": "a468",
+  "version": "1.0.0",
+  "description": "backend for a468",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XynoxTheDev/A468.git"
+  },
+  "author": "XynoxTheDev, anurag3301",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/XynoxTheDev/A468/issues"
+  },
+  "homepage": "https://github.com/XynoxTheDev/A468#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1"
+  }
+}
