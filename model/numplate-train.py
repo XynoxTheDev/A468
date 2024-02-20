@@ -39,7 +39,7 @@ for filename in path:
 
 def getFilename(filename):
     filename_image = xet.parse(filename).getroot().find('filename').text
-    filepath_image = os.path.join('images',filename_image)
+    filepath_image = os.path.join(f'{dataset_root}/images',filename_image)
     return filepath_image
 
 df = pd.DataFrame(labels_dict)
@@ -81,4 +81,9 @@ headmodel = Dense(4,activation='sigmoid')(headmodel)
 
 model = Model(inputs=inception_resnet.input,outputs=headmodel)
 model.compile(loss='mse',optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4))
-print(model.summary())
+
+tfb = TensorBoard('numplate_detection')
+history = model.fit(x=x_train,y=y_train,batch_size=10,epochs=180,
+                    validation_data=(x_test,y_test),callbacks=[tfb])
+
+model.save('./numplate_detection.h5')
