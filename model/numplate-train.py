@@ -72,4 +72,11 @@ y = np.array(output,dtype=np.float32)
 x_train,x_test,y_train,y_test = train_test_split(X,y,train_size=0.8,random_state=0)
 x_train.shape,x_test.shape,y_train.shape,y_test.shape
 
+inception_resnet = InceptionResNetV2(weights="imagenet",include_top=False, input_tensor=Input(shape=(224,224,3)))
+headmodel = inception_resnet.output
+headmodel = Flatten()(headmodel)
+headmodel = Dense(500,activation="relu")(headmodel)
+headmodel = Dense(250,activation="relu")(headmodel)
+headmodel = Dense(4,activation='sigmoid')(headmodel)
 
+model = Model(inputs=inception_resnet.input,outputs=headmodel)
