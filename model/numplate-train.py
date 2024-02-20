@@ -80,3 +80,5 @@ headmodel = Dense(250,activation="relu")(headmodel)
 headmodel = Dense(4,activation='sigmoid')(headmodel)
 
 model = Model(inputs=inception_resnet.input,outputs=headmodel)
+model.compile(loss='mse',optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4))
+print(model.summary())
