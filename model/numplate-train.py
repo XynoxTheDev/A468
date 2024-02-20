@@ -46,4 +46,23 @@ df = pd.DataFrame(labels_dict)
 df.to_csv(f'{dataset_root}/labels.csv',index=False)
 image_path = list(df['filepath'].apply(getFilename))
 
-print(image_path)
+labels = df.iloc[:,1:].values
+data = []
+output = []
+for ind in range(len(image_path)):
+    image = image_path[ind]
+    img_arr = cv2.imread(image)
+    h,w,d = img_arr.shape
+    # Prepprocesing
+    load_image = load_img(image,target_size=(224,224))
+    load_image_arr = img_to_array(load_image)
+    norm_load_image_arr = load_image_arr/255.0 # Normalization
+    # Normalization to labels
+    xmin,xmax,ymin,ymax = labels[ind]
+    nxmin,nxmax = xmin/w,xmax/w
+    nymin,nymax = ymin/h,ymax/h
+    label_norm = (nxmin,nxmax,nymin,nymax) # Normalized output
+    # Append
+    data.append(norm_load_image_arr)
+    output.append(label_norm)
+
