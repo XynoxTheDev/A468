@@ -66,3 +66,10 @@ for ind in range(len(image_path)):
     data.append(norm_load_image_arr)
     output.append(label_norm)
 
+X = np.array(data,dtype=np.float32)
+y = np.array(output,dtype=np.float32)
+
+x_train,x_test,y_train,y_test = train_test_split(X,y,train_size=0.8,random_state=0)
+x_train.shape,x_test.shape,y_train.shape,y_test.shape
+
+
