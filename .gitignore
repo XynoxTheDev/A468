@@ -1,4 +1,6 @@
 
 .vscode/settings.json
-database.db
-env
+/node_modules
+/node_modules/.package-lock.json
+
+users.db
