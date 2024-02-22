@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Face Blur App</title>
+</head>
+<body>
+    <h1>Hey {{ user }} Welcome to the AI Face Blur App</h1>
+    
+    <form method="post">
+        <div>
+            <label for="image">Upload an image:</label>
+            <input type="file" id="image" name="image" required>
+        </div>
+        <button type="submit" class="button">Upload</button>
+    </form>
+
+    <a href="/logout" class="button">Logout</a>
+</body>
+</html>

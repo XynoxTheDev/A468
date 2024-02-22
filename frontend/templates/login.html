@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Face Blur App</title>
+</head>
+<body>    
+    <a href="/">
+        <h1>AI FACE BLUR APP</h1>
+    </a>
+    <h1>Welcome to the AI Face Blur App</h1>
+    <h1>Login to our App</h1>
+    <form method="post">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="button">Login</button>
+    </form>
+    <p>OR</p>
+    <a href="/register" class="button">Register</a>
+</body>
+</html>
