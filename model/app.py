@@ -1,10 +1,13 @@
 from flask import Flask, request, render_template, send_file, make_response, jsonify
 from mtcnn import FaceModel
+from numplate_model import NumplateModel
 import cv2
 from io import BytesIO
+import numpy as np
 
 app = Flask(__name__)
-face = FaceModel()
+face_model = FaceModel()
+plate_model = NumplateModel('./numplate_detection.h5')
 
 @app.route('/')
 def index():
@@ -23,8 +26,15 @@ def upload_file():
     try:
         if file:
             # file.save(file.filename)
+            face = request.form.get('face')
+            numplate = request.form.get('numplate')
             image_stream = BytesIO()
-            image = face.detect(file.read())
+            nparr = np.frombuffer(file.read(), np.uint8)
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            if face is not None:
+                image = face_model.detect(image)
+            if numplate is not None:
+                image = plate_model.detect(image)
             success, encoded_image = cv2.imencode('.jpg', image)
             if success:
                 image_stream.write(encoded_image.tobytes())
