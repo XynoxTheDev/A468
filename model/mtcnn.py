@@ -11,9 +11,7 @@ class FaceModel:
         self.mtcnn = MTCNN(keep_all=True, device=device)
         self.resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 
-    def detect(self, image_data):
-        nparr = np.frombuffer(image_data, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    def detect(self, image):
         boxes, _ = self.mtcnn.detect(image)
 
         if boxes is not None:
@@ -54,8 +52,10 @@ class FaceModel:
 if __name__ == "__main__":
     image_path = 'tests/2.jpg'
     file = open(image_path, 'rb')
+    nparr = np.frombuffer(file.read(), np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     face = FaceModel()
-    image = face.detect(file.read())
+    image = face.detect(image)
     cv2.imshow('Faces', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
