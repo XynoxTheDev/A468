@@ -5,14 +5,25 @@ Object Recognition &amp; Manipulation Program
 ```
 A468/
 │
-├── frontend/
-│   ├── login.html
-│   ├── signup.html
-│   ├── styles.css
-│   └── script.js
+├── .github/                           # GitHub Workflow
 │
-└── backend/
-    ├── node_modules/
-    ├── app.js
-    └── package.json
+├── backend/                           # Backend Development
+│   └── model/                         # Model Architecture
+│
+└── frontend/                          # Frontend Development
+    ├── static/                        # Static Assets
+    │   └── css/                       # Cascading Style Sheets
+    │
+    ├── templates/                     # HTML Templates
+    │   ├── index.html                 # Homepage
+    │   ├── login.html                 # Login Page
+    │   ├── main.html                  # Main Application Page
+    │   └── register.html              # Registration Page
+    │
+    ├── main.py                        # Main Python Script
+    └── requirements.txt               # Python Dependencies
+│
+├── LICENSE                            # Software License
+├── .gitconfig                         # Git Configuration
+└── .gitignore                         # Git Ignore Settings
 ```
