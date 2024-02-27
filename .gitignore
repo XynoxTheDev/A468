@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 __pycache__ 
 numplate_detection.h5
 *.ipynb
-=======
 
 .vscode/settings.json
 *.db
->>>>>>> main
