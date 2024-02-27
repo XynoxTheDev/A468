@@ -1,0 +1,5 @@
+[user]
+    email = arindamhazra987@gmail.com
+    name = xynox
+[includeIf "gitdir:~/Documents/GitHub/"]
+    path = /home/xynox/Documents/GitHub/A468/.gitconfig
