@@ -12,7 +12,7 @@ A468/
 │
 └── frontend/                          # Frontend Development
     ├── static/                        # Static Assets
-    │   └── css/                       # Cascading Style Sheets
+    │   └── style.css                  # Cascading Style Sheet
     │
     ├── templates/                     # HTML Templates
     │   ├── index.html                 # Homepage
