@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>A468 - Dashboard</title>
-</head>
-<body>    
-    <a href="/">
-        <h1>A468 - Object Recognition & Manipulation Program</h1>
-    </a>
-    <h1>Welcome to the A468</h1>
-    <h1>Login to our App</h1>
-    <form method="post">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link class="fav-icon" rel="shortcut icon" type="image/x-icon"
+            href="{{ url_for('static', filename='A468.png') }}">
+        <title>A468 - Dashboard</title>
+    </head>
+
+    <body>
+        <div class="nav-header">
+            <img id="logo" src="/static/A468.png" alt="a468">
+            <h1>
+                An Object Recognition & Manipulation Program
+            </h1>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+
+        <div class="daddy-cont">
+            <div class="cont">
+                <h2>Authentication Gateway</h2>
+                <form class="form" method="post">
+                    <div>
+                        <input type="text" placeholder="Username" id="username" name="username" required>
+                    </div>
+                    <div>
+                        <input type="password" placeholder="Password" id="password" name="password" required>
+                    </div><br>
+
+                    <div id="main-btn">
+                        <button type="submit" class="button">Login</button>
+                    </div>
+                    <p>Don't have an account? <a href="/register">Sign up</a></p>
+                </form>
+            </div>
         </div>
-        <button type="submit" class="button">Login</button>
-    </form>
-    <p>OR</p>
-    <a href="/register" class="button">Register</a>
-</body>
+
+
+        <h5 id="footer">An initiative by <a href="https://github.com/XynoxTheDev/A468/">/github:A468</a></h5>
+
+    </body>
+
 </html>
