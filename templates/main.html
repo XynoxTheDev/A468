@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>A468 - Dashboard</title>
-</head>
-<body>
-    <h1>Hey {{ user }} Welcome to the A468 - Object Recognition & Manipulation Program</h1>
-    
-    <form method="post">
-        <div>
-            <label for="image">Upload an image:</label>
-            <input type="file" id="image" name="image" required>
-        </div>
-        <button type="submit" class="button">Upload</button>
-    </form>
 
-    <a href="/logout" class="button">Logout</a>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='A468.png') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <title>A468 - Dashboard</title>
+    </head>
+
+    <body>
+        <div class="nav-header">
+            <img id="logo" src="/static/A468.png" alt="a468">
+            <h1>
+                An Object Recognition & Manipulation Program
+            </h1>
+        </div>
+
+        <div class="daddy-cont">
+            <div class="cont">
+                <h2>User Services Portal</h2>
+                <form class="form" method="post">
+                    <div class="user-cont">
+                        <label id="img-head" for="image">Select your image here</label>
+                        <input type="file" id="image" name="image" required>
+                    </div><br>
+
+                    <div id="main-btn">
+                        <button type="submit" class="button">Upload</button>
+                    </div>
+                    <a class="logout" href="/logout">Logout</a>
+                </form>
+            </div>
+        </div>
+
+        <h4 id="user">Currently logged in as <span style="color: blue;">{{ user }}</span>!</h4>
+        <h5 id="footer">An initiative by <a href="https://github.com/XynoxTheDev/A468/">/github:A468</a></h5>
+
+    </body>
+
 </html>
