@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session
 import sqlite3
 import bcrypt
+import datetime
 
 app = Flask(__name__)
 app.secret_key =  'a468'
@@ -12,7 +13,7 @@ def index():
         return render_template('main.html', user=session['username'])
     else:
         return render_template('index.html')
-connection = sqlite3.connect('database.db')
+connection = sqlite3.connect('database.db', check_same_thread=False)
 if connection:
     print('Connected to the database')
 else:
@@ -54,6 +55,32 @@ def login():
             return 'Invalid username or password'
     else:
         return render_template('login.html')
+    
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    if 'username' not in session:
+        return render_template('index.html')
+    if request.method == 'POST':
+        connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, image BLOB)')
+        image = request.files['image']
+        with sqlite3.connect('database.db') as userdata:
+            cursor = userdata.cursor()
+            cursor.execute('INSERT INTO images (timestamp, username, image) VALUES (?, ?, ?)', (str(datetime.datetime.now()), session['username'], image.read()))
+            userdata.commit()
+        return '<script>alert("Upload Successful!")</script>'
+    else:
+        return render_template('upload.html') 
+
+
+@app.route('/view')
+def view():
+    if 'username' not in session:
+        return render_template('index.html')
+    with sqlite3.connect('database.db') as userdata:
+        cursor = userdata.cursor()
+        cursor.execute('SELECT * FROM images WHERE username = ?', (session['username'],))
+        images = cursor.fetchall()
+        return render_template('view.html', images=images)
 
 @app.route('/logout')
 def logout():

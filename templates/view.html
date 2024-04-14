@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>View Images</title>
+    </head>
+
+    <body>
+        {% if images %}
+        <h1>Images:</h1>
+        <ul>
+            {% for image in images %}
+            <li>
+                <p>Username: {{ image[1] }}</p>
+                <p>Timestamp: {{ image[0] }}</p>
+                <img src="data:image/png;base64,{{ image[2] }}" alt="Image">
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No images found.</p>
+        {% endif %}
+    </body>
+
+</html>
