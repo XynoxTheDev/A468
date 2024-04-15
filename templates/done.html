@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='A468.png') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <title>A468 - Done</title>
+    </head>
+
+    <body>
+        <div class="nav-header">
+            <img id="logo" src="/static/A468.png" alt="a468">
+            <h1>
+                An Object Recognition & Manipulation Program
+            </h1>
+        </div>
+
+        <div class="daddy-cont">
+            <div class="cont">
+                <h2>User Services Portal</h2>
+                <div class="user-cont">
+                    <h3>Processed Image</h3>
+                    <img src="data:image/jpg;base64,{{ response.data }}" alt="Image">
+                    <br>
+                    <a href="{{ response }}" download="processed_image.jpg">
+                        <button class="btn">Download Image</button>
+                </div>
+                <a class="logout" href="/logout">Logout</a>
+                </form>
+            </div>
+        </div>
+
+        <h4 id="user">Currently logged in as <span style="color: blue;">{{ user }}</span>!</h4>
+        <h5 id="footer">An initiative by <a href="https://github.com/XynoxTheDev/A468/">/github:A468</a></h5>
+
+    </body>
+
+</html>

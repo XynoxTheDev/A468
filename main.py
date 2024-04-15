@@ -1,10 +1,20 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, send_file, make_response, jsonify
 import sqlite3
 import bcrypt
+import datetime
+import base64
+from mtcnn import FaceModel
+import cv2
+from io import BytesIO
+import numpy as np
+# from numplate_model import NumplateModel
+
 
 app = Flask(__name__)
 app.secret_key =  'a468'
 
+face_model = FaceModel()
+# plate_model = NumplateModel('./numplate_detection.h5')
 
 @app.route('/')
 def index():
@@ -12,7 +22,7 @@ def index():
         return render_template('main.html', user=session['username'])
     else:
         return render_template('index.html')
-connection = sqlite3.connect('database.db')
+connection = sqlite3.connect('database.db', check_same_thread=False)
 if connection:
     print('Connected to the database')
 else:
@@ -54,6 +64,62 @@ def login():
             return 'Invalid username or password'
     else:
         return render_template('login.html')
+    
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    if 'username' not in session:
+        return render_template('index.html')
+    connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, image BLOB)')
+
+    file = request.files['image']
+
+    try:
+        if file:
+            # file.save(file.filename)
+            face = request.form.get('face')
+            # numplate = request.form.get('numplate')
+            image_stream = BytesIO()
+            nparr = np.frombuffer(file.read(), np.uint8)
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            if face is not None:
+                image = face_model.detect(image)
+            # if numplate is not None:
+            #     image = plate_model.detect(image)
+            success, encoded_image = cv2.imencode('.jpg', image)
+
+            # if request.form.get('option') == 'face':
+            #     # face wala code
+            # else:
+            #     # numplate wala code
+
+            if success:
+                image_stream.write(encoded_image.tobytes())
+                image_stream.seek(0)
+                response = make_response(send_file(image_stream, mimetype='image/jpeg'))
+                response.headers['Content-Disposition'] = f'attachment; filename={file.filename}'
+                # with sqlite3.connect('database.db') as userdata:
+                #     cursor = userdata.cursor()
+                #     cursor.execute('INSERT INTO images (timestamp, username, image) VALUES (?, ?, ?)', (str(datetime.datetime.now()), session['username'], response))
+                #     userdata.commit()
+
+                return response
+                
+                # The bellow code will pass the image to the view.html page
+                # response.direct_passthrough = False
+                # return render_template('done.html', response=response)
+    except Exception as e:
+        return str(e), 500
+
+
+@app.route('/view')
+def view():
+    if 'username' not in session:
+        return render_template('index.html')
+    with sqlite3.connect('database.db') as userdata:
+        cursor = userdata.cursor()
+        cursor.execute('SELECT * FROM images WHERE username = ?', (session['username'],))
+        images = cursor.fetchall()
+        return render_template('view.html', images=images)
 
 @app.route('/logout')
 def logout():

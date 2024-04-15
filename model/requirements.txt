@@ -1,5 +1,0 @@
-torch
-torchvision
-facenet-pytorch
-opencv-python
-flask

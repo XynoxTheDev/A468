@@ -20,10 +20,14 @@
         <div class="daddy-cont">
             <div class="cont">
                 <h2>User Services Portal</h2>
-                <form class="form" method="post">
+                <form class="form" method="POST" action="/upload" enctype="multipart/form-data">
                     <div class="user-cont">
                         <label id="img-head" for="image">Select your image here</label>
-                        <input type="file" id="image" name="image" required>
+                        <input type="file" id="image" name="image" required> <br>
+                        <div class="models">
+                            <input type="checkbox" name="face"> Face<br>
+                            <!-- <input type="checkbox" name="numplate"> Number Plate<br><br>                 -->
+                        </div>
                     </div><br>
 
                     <div id="main-btn">
@@ -34,7 +38,7 @@
             </div>
         </div>
 
-        <h4 id="user">Currently logged in as <span style="color: blue;">{{ user }}</span>!</h4>
+        <h4 id="user">Currently logged in as <span style="color: blue;"><a href="/view">{{ user }}</a></span>!</h4>
         <h5 id="footer">An initiative by <a href="https://github.com/XynoxTheDev/A468/">/github:A468</a></h5>
 
     </body>
