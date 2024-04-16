@@ -72,10 +72,10 @@ def upload():
     connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, image BLOB)')
 
     file = request.files['image']
+    filename = request.form['filename']
 
     try:
         if file:
-            # file.save(file.filename)
             face = request.form.get('face')
             # numplate = request.form.get('numplate')
             image_stream = BytesIO()
@@ -97,16 +97,13 @@ def upload():
                 image_stream.seek(0)
                 response = make_response(send_file(image_stream, mimetype='image/jpeg'))
                 response.headers['Content-Disposition'] = f'attachment; filename={file.filename}'
-                # with sqlite3.connect('database.db') as userdata:
-                #     cursor = userdata.cursor()
-                #     cursor.execute('INSERT INTO images (timestamp, username, image) VALUES (?, ?, ?)', (str(datetime.datetime.now()), session['username'], response))
-                #     userdata.commit()
 
-                return response
-                
-                # The bellow code will pass the image to the view.html page
-                # response.direct_passthrough = False
-                # return render_template('done.html', response=response)
+                cursor = connection.cursor()
+                cursor.execute('INSERT INTO images (timestamp, username, image) VALUES (?, ?, ?)', (str(datetime.datetime.now()), session['username'], encoded_image.tobytes()))
+                connection.commit()
+                encoded_image_base64 = base64.b64encode(encoded_image).decode('utf-8')
+                return render_template('main.html', encoded_image=encoded_image_base64, filename=filename)
+
     except Exception as e:
         return str(e), 500
 

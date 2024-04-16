@@ -6,7 +6,7 @@
     <title>A468 - Dashboard</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='A468.png') }}">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+r   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -40,6 +40,8 @@
                             <div>
                                 <button type="submit" class="btn btn-primary">Upload</button>
                                 <a href="/logout" class="btn btn-danger">Logout</a>
+                                <input type="hidden" id="filename" name="filename">
+
                             </div>
                         </form>
 
@@ -47,15 +49,24 @@
                     </div>
                 </div>
             </div>
+
+            {% if encoded_image %}
             <div class="col-md-8 mt-4">
                 <!-- New Section -->
                 <div class="card">
                     <div class="card-body text-center">
                         <h2 class="card-title mb-4">Result</h2>
-                        <img id="result_image" src="{{ url_for('static', filename='img/g1.png') }}" class="img-fluid mx-auto d-block" alt="Result Image" style="max-width: 50%; margin-top: 20px;">
+                        <button type="button" class="btn btn-primary">
+                            <a href="data:image/jpeg;base64,{{ encoded_image }}" download="{{ filename }}" style="color: white; text-decoration: none;">Download Image</a>
+                        </button>
+                        <img id="result_image" src="data:image/jpeg;base64,{{ encoded_image }}" class="img-fluid mx-auto d-block" alt="Result Image" style="max-width: 50%; margin-top: 20px;">
+                        <div class="mt-3">
+                    </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
+
         </div>
     </div>
 
@@ -75,6 +86,7 @@
             } else {
                 fileNameSpan.textContent = fileName;
             }
+            document.getElementById("filename").value = filename;
         }
     </script>
 </body>
