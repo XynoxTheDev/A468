@@ -21,7 +21,8 @@ def index():
     if 'username' in session:
         return render_template('main.html', user=session['username'])
     else:
-        return render_template('index.html')
+        return render_template('landing.html')
+
 connection = sqlite3.connect('database.db', check_same_thread=False)
 if connection:
     print('Connected to the database')
