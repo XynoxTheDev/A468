@@ -69,10 +69,11 @@ def login():
 def upload():
     if 'username' not in session:
         return render_template('index.html')
-    connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, filename TEXT, image BLOB)')
+    connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, filename TEXT, filters TEXT, image BLOB)')
 
     file = request.files['image']
     filename = request.form['filename']
+    filter = ""
 
     try:
         if file:
@@ -83,6 +84,7 @@ def upload():
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
             if face is not None:
                 image = face_model.detect(image)
+                filter += "face "
             # if numplate is not None:
             #     image = plate_model.detect(image)
             success, encoded_image = cv2.imencode('.jpg', image)
@@ -100,7 +102,7 @@ def upload():
 
                 encoded_image_base64 = base64.b64encode(encoded_image).decode('utf-8')
                 cursor = connection.cursor()
-                cursor.execute('INSERT INTO images (timestamp, username, filename, image) VALUES (?, ?, ?, ?)', (str(datetime.datetime.now()), session['username'], filename, encoded_image.tobytes()))
+                cursor.execute('INSERT INTO images (timestamp, username, filename, filters, image) VALUES (?, ?, ?, ?, ?)', (str(datetime.datetime.now()), session['username'], filename, filter, encoded_image.tobytes()))
                 connection.commit()
                 return render_template('main.html', encoded_image=encoded_image_base64, filename=filename)
 
@@ -114,12 +116,12 @@ def view():
         return render_template('index.html')
     with sqlite3.connect('database.db') as userdata:
         cursor = userdata.cursor()
-        cursor.execute('SELECT timestamp, filename, image FROM images WHERE username = ?', (session['username'],))
+        cursor.execute('SELECT timestamp, filename, filters, image FROM images WHERE username = ?', (session['username'],))
         data = cursor.fetchall()
         new_data = []
         for row in data:
-            encoded_image = base64.b64encode(row[2]).decode('utf-8')
-            new_data.append((row[0], row[1], encoded_image))
+            encoded_image = base64.b64encode(row[3]).decode('utf-8')
+            new_data.append((row[0], row[1], row[2], encoded_image))
         return render_template('view.html', images=new_data, user=session['username'])
 
 @app.route('/logout')

@@ -32,13 +32,15 @@
             {% for image in images %}
             <div class="col-md-4">
                 <div class="card image-card">
-                    <img src="data:image/jpeg;base64,{{ image[2] }}" class="card-img-top" alt="Image">
+                    <img src="data:image/jpeg;base64,{{ image[3] }}" class="card-img-top" alt="Image">
                     <div class="card-body">
                         <div class="info-section">
                             <span class="label">Timestamp:</span>
                             <span class="data">{{ image[0] }}</span><br>
                             <span class="label">Filename:</span>
-                            <span class="data">{{ image[1] }}</span>
+                            <span class="data">{{ image[1] }}</span><br>
+                            <span class="label">Filters:</span>
+                            <span class="data">{{ image[2] }}</span>
                         </div>
                     </div>
                 </div>
