@@ -39,12 +39,25 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        confirm_password = request.form['cpassword']
+        if password != confirm_password:
+            return render_template('register.html', error='Password and Confirm password didnt match')
+
         encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        with sqlite3.connect('database.db') as userdata:
-            cursor = userdata.cursor()
-            cursor.execute('INSERT INTO userdata (username, password) VALUES (?, ?)', (username, encrypted_password))
-            userdata.commit()
-        return render_template('index.html')
+        cursor = connection.cursor()
+        
+        # Check if username already exists
+        cursor.execute('SELECT * FROM userdata WHERE username = ?', (username,))
+        existing_user = cursor.fetchone()
+        if existing_user:
+            return render_template('register.html', error='Username already exists')
+        
+        # If username does not exist, hash the password and insert new user into database
+        encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        cursor.execute('INSERT INTO userdata (username, password) VALUES (?, ?)', (username, encrypted_password))
+        connection.commit()
+
+        return render_template('landing.html')
     else:
         return render_template('register.html')
 
@@ -62,14 +75,15 @@ def login():
                 if request.form['username'] == user[0] and bcrypt.checkpw(request.form['password'].encode('utf-8'), user[1]):
                     session['username'] = request.form['username']
                     return render_template('main.html', user=session['username'])
-            return 'Invalid username or password'
+
+            return render_template('login.html', error='Invalid username or password')
     else:
         return render_template('login.html')
     
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
     if 'username' not in session:
-        return render_template('index.html')
+        return render_template('landing.html')
     connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, filename TEXT, filters TEXT, image BLOB)')
 
     file = request.files['image']
@@ -114,7 +128,7 @@ def upload():
 @app.route('/view')
 def view():
     if 'username' not in session:
-        return render_template('index.html')
+        return render_template('landing.html')
     with sqlite3.connect('database.db') as userdata:
         cursor = userdata.cursor()
         cursor.execute('SELECT timestamp, filename, filters, image FROM images WHERE username = ?', (session['username'],))
@@ -128,7 +142,7 @@ def view():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return render_template('index.html')
+    return render_template('landing.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
