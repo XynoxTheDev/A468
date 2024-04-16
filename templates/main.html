@@ -8,26 +8,44 @@
     <!-- Bootstrap CSS -->
 r   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .logo-container {
+            border-radius: 50%;
+            overflow: hidden;
+            width: 75px;
+            height: 75px;
+        }
+        .logo-container img {
+            width: 100%;
+            height: auto;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-md-8">
-                <div class="text-center mb-4">
-                    <img src="/static/A468.png" alt="a468" height="75">
-                    <h1 class="mt-3">An Object Recognition & Manipulation Program</h1>
+
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                    <div class="mr-4">
+                        <div class="logo-container">
+                            <img src="/static/A468.png" alt="a468">
+                        </div>
+                    </div>
+                    <div style="margin-left: 1.5em;">
+                        <h1 class="mt-3" style="font-weight: bold;">An Object Recognition & Manipulation Program</h1>
+                    </div>
                 </div>
+
                 <div class="card mb-4">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">User Services Portal</h2>
 
-
-
                         <form method="POST" action="/upload" enctype="multipart/form-data" class="text-center">
-                            <label for="image" class="btn btn-primary">
-                                Choose File <input type="file" id="image" name="image" accept="image/*" onchange="showFileName()" required style="display: none;">
+                            <label for="image"  class="btn btn-primary file_input ">
+                                Select your image <input type="file" id="image" name="image" accept="image/*" onchange="showFileName()" required style="display: none;">
                             </label><br>
-                            <!-- Added an empty span below the file choose button -->
                             <span id="file_name"></span>
                             <div class="mb-3 mt-3 row justify-content-center">
                                 <div class="col-auto">
@@ -38,13 +56,12 @@ r   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/boo
                                 </div>
                             </div>
                             <div>
-                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="submit" class="btn btn-primary upload_btn">Upload</button>
                                 <a href="/logout" class="btn btn-danger">Logout</a>
                                 <input type="hidden" id="filename" name="filename">
 
                             </div>
                         </form>
-
 
                     </div>
                 </div>
@@ -66,12 +83,13 @@ r   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/boo
                 </div>
             </div>
             {% endif %}
-
+            <div class="row">
+                <h4 class="text-center mt-1">Currently logged in as <span style="color: blue;"><a href="/view">{{ user }}</a></span>!</h4>
+                <h5 class="text-center">An initiative by <a href="https://github.com/XynoxTheDev/A468/">/github:A468</a></h5>
+            </div>
         </div>
     </div>
 
-    <h4 class="text-center mt-3">Currently logged in as <span style="color: blue;"><a href="/view">{{ user }}</a></span>!</h4>
-    <h5 class="text-center mt-5">An initiative by <a href="https://github.com/XynoxTheDev/A468/">/github:A468</a></h5>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

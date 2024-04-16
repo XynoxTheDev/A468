@@ -100,9 +100,9 @@ body {
     width: 100%;
 }
 
-.form>div>button {
+.upload_btn {
     background-color: #4caf50;
-    width: 100%;
+    width: 6em;
     border: none;
     border-radius: 10px;
     padding: 10px;
@@ -139,31 +139,17 @@ body {
     margin-top: 100px;
 }
 
-.user-cont {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
 
 
-.user-cont label {
-    display: blocredk;
+.file_input {
     border-radius: 13px;
     background: linear-gradient(40deg, #000000, #464646);
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
     padding: 15px;
+    width: 15em;
     transition: transform .2s ease-out;
     text-align: center;
-}
-
-.user-cont>input {
-    display: none;
 }
