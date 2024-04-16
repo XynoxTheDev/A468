@@ -1,25 +1,57 @@
+
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <title>View Images</title>
-    </head>
+<head>
+    <title>View Images</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .image-card {
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .info-section {
+            font-size: 14px;
+        }
+        .label {
+            font-weight: bold;
+            color: black;
+        }
+        .data {
+            font-weight: normal;
+            color: #666;
+        }
+    </style>
+</head>
 
-    <body>
+<body>
+    <div class="container">
         {% if images %}
-        <h1>Images:</h1>
-        <ul>
+        <h1 class="mt-4 mb-3">History</h1>
+        <div class="row">
             {% for image in images %}
-            <li>
-                <p>Username: {{ image[1] }}</p>
-                <p>Timestamp: {{ image[0] }}</p>
-                <img src="data:image/png;base64,{{ image[2] }}" alt="Image">
-            </li>
+            <div class="col-md-4">
+                <div class="card image-card">
+                    <img src="data:image/jpeg;base64,{{ image[2] }}" class="card-img-top" alt="Image">
+                    <div class="card-body">
+                        <div class="info-section">
+                            <span class="label">Timestamp:</span>
+                            <span class="data">{{ image[0] }}</span><br>
+                            <span class="label">Filename:</span>
+                            <span class="data">{{ image[1] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
         {% else %}
         <p>No images found.</p>
         {% endif %}
-    </body>
+    </div>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 
 </html>

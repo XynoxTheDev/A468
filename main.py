@@ -69,7 +69,7 @@ def login():
 def upload():
     if 'username' not in session:
         return render_template('index.html')
-    connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, image BLOB)')
+    connection.execute('CREATE TABLE IF NOT EXISTS images (timestamp TEXT, username TEXT, filename TEXT, image BLOB)')
 
     file = request.files['image']
     filename = request.form['filename']
@@ -98,10 +98,10 @@ def upload():
                 response = make_response(send_file(image_stream, mimetype='image/jpeg'))
                 response.headers['Content-Disposition'] = f'attachment; filename={file.filename}'
 
-                cursor = connection.cursor()
-                cursor.execute('INSERT INTO images (timestamp, username, image) VALUES (?, ?, ?)', (str(datetime.datetime.now()), session['username'], encoded_image.tobytes()))
-                connection.commit()
                 encoded_image_base64 = base64.b64encode(encoded_image).decode('utf-8')
+                cursor = connection.cursor()
+                cursor.execute('INSERT INTO images (timestamp, username, filename, image) VALUES (?, ?, ?, ?)', (str(datetime.datetime.now()), session['username'], filename, encoded_image.tobytes()))
+                connection.commit()
                 return render_template('main.html', encoded_image=encoded_image_base64, filename=filename)
 
     except Exception as e:
@@ -114,9 +114,13 @@ def view():
         return render_template('index.html')
     with sqlite3.connect('database.db') as userdata:
         cursor = userdata.cursor()
-        cursor.execute('SELECT * FROM images WHERE username = ?', (session['username'],))
-        images = cursor.fetchall()
-        return render_template('view.html', images=images)
+        cursor.execute('SELECT timestamp, filename, image FROM images WHERE username = ?', (session['username'],))
+        data = cursor.fetchall()
+        new_data = []
+        for row in data:
+            encoded_image = base64.b64encode(row[2]).decode('utf-8')
+            new_data.append((row[0], row[1], encoded_image))
+        return render_template('view.html', images=new_data, user=session['username'])
 
 @app.route('/logout')
 def logout():
