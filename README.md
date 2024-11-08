@@ -1,6 +1,4 @@
-# A468
-
-Object Recognition & Manipulation Program
+# A468 — Object Recognition & Manipulation Program
 
 ## Overview
 
