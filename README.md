@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![A468 Logo](static/A468.png)
+<!-- ![A468 Logo](static/A468.png) -->
 
 **A web-based tool that detects faces and license plates in images, then automatically blurs them for privacy protection.**
 
